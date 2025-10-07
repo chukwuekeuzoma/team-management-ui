@@ -10,24 +10,28 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/Select";
+import { Navigationbar } from "@/components/dashboard/NavigationBar";
 
 export default function Home() {
   return (
-    <div className="flex flex-col gap-2.5 items-center h-screen">
-      <Button size="lg"> Martins</Button>
-      <Input type="email" placeholder="Email" />
-      <Search placeholder="Search..." />
-      <Textarea placeholder="Type your message here." />
-      <Select>
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="ok" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="light">Light</SelectItem>
-          <SelectItem value="dark">Dark</SelectItem>
-          <SelectItem value="system">System</SelectItem>
-        </SelectContent>
-      </Select>
-    </div>
+    <>
+      <Navigationbar />
+      {/* <div className="flex flex-col gap-2.5 items-center h-screen">
+        <Button size="lg"> Martins</Button>
+        <Input type="email" placeholder="Email" />
+        <Search placeholder="Search..." />
+        <Textarea placeholder="Type your message here." />
+        <Select>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="ok" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="light">Light</SelectItem>
+            <SelectItem value="dark">Dark</SelectItem>
+            <SelectItem value="system">System</SelectItem>
+          </SelectContent>
+        </Select>
+      </div> */}
+    </>
   );
 }

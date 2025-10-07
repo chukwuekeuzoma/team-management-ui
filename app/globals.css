@@ -7,8 +7,26 @@
   --color-primary-foreground: #ffffff;
   --color-secondary: 210 40% 96%;
   --color-secondary-foreground: 222.2 47.4% 11.2%;
+  --color-text: #333333;
   --color-input: #ebebeb;
-  --color-input-icon:#22C55E;
+  --color-input-icon: #22c55e;
+  --color-nav-text: #6b7280;
+  --color-nav-text-hover: #1e3a8a;
+  --color-nav-bg-hover: #dbeafe;
+  --color-nav-active: var(--color-nav-text-hover);
+  --color-nav-active-bg: var(--color-nav-bg-hover);
+  --color-nav-bg: var(--color-primary-foreground);
+  --color-nav-border-top: #fef3c7;
+  --color-nav-border-left: var(--color-nav-border-top);
+  --color-nav-border-bottom: var(--color-input-icon);
+  --color-brand-bg: #2563eb;
+  --color-brand-text: var(--color-primary-foreground);
+  --color-brand-name: var(--color-brand-bg);
+  --color-separator: #d1d5db;
+  --color-icon-gray: var(--color-nav-text);
+  --color-icon-blue: var(--color-brand-bg);
+  --color-button-border: var(--color-separator);
+  --color-button-hover: #f9fafb;
 }
 
 /* Base layer for default look */
