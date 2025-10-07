@@ -3,7 +3,7 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import type { LucideIcon } from "lucide-react";
-import { Home, X } from "lucide-react";
+import { Home, X, ChevronLeft } from "lucide-react";
 
 type Step = {
   label: string;
@@ -15,6 +15,8 @@ type StepsNavigationBarProps = {
   onStepClick?: (index: number) => void; // backward compatibility (unused)
   title?: string;
   onClose?: () => void;
+  breadcrumbs?: string[]; // e.g. ["Admin Settings", "Teams"]
+  onBack?: () => void; // optional back action for the breadcrumb row
 };
 
 export const StepsNavigationBar: React.FC<StepsNavigationBarProps> = ({
@@ -22,6 +24,8 @@ export const StepsNavigationBar: React.FC<StepsNavigationBarProps> = ({
   onStepClick,
   title = "Admin Settings",
   onClose,
+  breadcrumbs = ["Admin Settings", "Teams"],
+  onBack,
 }) => {
   return (
     <nav className={cn("w-full", className)}>
@@ -46,6 +50,41 @@ export const StepsNavigationBar: React.FC<StepsNavigationBarProps> = ({
           </div>
         </div>
       </div>
+      {breadcrumbs?.length && (
+        <div className="w-full bg-white">
+          <div className="max-w-7xl px-6 py-3">
+            {breadcrumbs?.length ? (
+              <div className="flex items-center text-sm text-nav-text">
+                <button
+                  type="button"
+                  aria-label="Back"
+                  onClick={onBack}
+                  className={cn(
+                    "w-5 h-5 mr-3 rounded-full border border-button-border flex items-center justify-center hover:bg-button-hover",
+                    onBack ? "cursor-pointer" : "cursor-default opacity-60"
+                  )}
+                >
+                  <ChevronLeft className="w-3 h-3" />
+                </button>
+                {breadcrumbs.map((crumb, index) => (
+                  <React.Fragment key={`${crumb}-${index}`}>
+                    {index > 0 && <span className="mx-2">/</span>}
+                    <span
+                      className={cn(
+                        "whitespace-nowrap",
+                        index === breadcrumbs.length - 1 &&
+                          "font-semibold text-text"
+                      )}
+                    >
+                      {crumb}
+                    </span>
+                  </React.Fragment>
+                ))}
+              </div>
+            ) : null}
+          </div>
+        </div>
+      )}
     </nav>
   );
 };
