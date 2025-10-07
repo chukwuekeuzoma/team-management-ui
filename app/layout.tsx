@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Navigationbar } from "@/components/dashboard/NavigationBar";
+import { StepsNavigationBar } from "@/components/dashboard/StepsNavigationBar";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -27,6 +29,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Navigationbar />
+        <StepsNavigationBar />
         {children}
       </body>
     </html>
