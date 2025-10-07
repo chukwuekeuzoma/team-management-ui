@@ -11,11 +11,12 @@ import {
   SelectValue,
 } from "@/components/ui/Select";
 import { Navigationbar } from "@/components/dashboard/NavigationBar";
-
+import { StepsNavigationBar } from "@/components/dashboard/StepsNavigationBar";
 export default function Home() {
   return (
     <>
       <Navigationbar />
+      <StepsNavigationBar />
       {/* <div className="flex flex-col gap-2.5 items-center h-screen">
         <Button size="lg"> Martins</Button>
         <Input type="email" placeholder="Email" />
