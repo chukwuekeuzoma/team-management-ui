@@ -1,6 +1,8 @@
 // import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input/input";
+import { Textarea } from "@/components/ui/TextArea";
+import { Search } from "@/components/ui/Search/Search";
 import {
   Select,
   SelectTrigger,
@@ -11,10 +13,12 @@ import {
 
 export default function Home() {
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex flex-col gap-2.5 items-center h-screen">
       <Button size="lg"> Martins</Button>
+      <Input type="email" placeholder="Email" />
+      <Search placeholder="Search..." />
+      <Textarea placeholder="Type your message here." />
       <Select>
-        <Input type="email" placeholder="Email" />
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="ok" />
         </SelectTrigger>
