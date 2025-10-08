@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/Table/Table";
 import { Checkbox } from "@/components/ui/Checkbox/Checkbox";
 import { Avatar, AvatarFallback } from "@/components/ui/Avatar/Avatar";
+import { Spinner } from "@/components/ui/Spinner/Spinner";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 
 type SortKey = keyof Pick<
@@ -147,6 +148,20 @@ const Table = () => {
     }
     return pages;
   };
+
+  if (loading) {
+    return (
+      <div className="p-6 bg-white min-h-screen">
+        <h1 className="text-2xl font-semibold text-gray-900 mb-6">Teams</h1>
+        <div className="flex items-center justify-center py-12">
+          <div className="flex items-center gap-3">
+            <Spinner className="h-6 w-6" />
+            <span className="text-gray-600">Loading teams...</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 bg-white min-h-screen">

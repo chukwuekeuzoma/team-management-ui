@@ -16,7 +16,7 @@ type State = {
   setSimulateFailureNextCall: (v: boolean) => void;
 };
 
-const fakeDelay = (ms = 500) => new Promise((res) => setTimeout(res, ms));
+const fakeDelay = (ms = 1200) => new Promise((res) => setTimeout(res, ms));
 
 export const useTeamsStore = create<State>((set, get) => ({
   teams: initialTeams,
@@ -29,7 +29,7 @@ export const useTeamsStore = create<State>((set, get) => ({
   fetchTeams: async () => {
     set({ loading: true, error: null });
     try {
-      await fakeDelay(500);
+      await fakeDelay();
       if (get().simulateFailureNextCall) {
         set({ simulateFailureNextCall: false });
         throw new Error("Simulated fetch failure");
@@ -44,7 +44,7 @@ export const useTeamsStore = create<State>((set, get) => ({
   createTeam: async (payload) => {
     set({ loading: true, error: null });
     try {
-      await fakeDelay(500);
+      await fakeDelay();
       if (get().simulateFailureNextCall) {
         set({ simulateFailureNextCall: false });
         throw new Error("Simulated create failure");
@@ -63,7 +63,7 @@ export const useTeamsStore = create<State>((set, get) => ({
   updateTeam: async (id, patch) => {
     set({ loading: true, error: null });
     try {
-      await fakeDelay(500);
+      await fakeDelay();
       if (get().simulateFailureNextCall) {
         set({ simulateFailureNextCall: false });
         throw new Error("Simulated update failure");
@@ -91,7 +91,7 @@ export const useTeamsStore = create<State>((set, get) => ({
   deleteTeam: async (id) => {
     set({ loading: true, error: null });
     try {
-      await fakeDelay(500);
+      await fakeDelay();
       if (get().simulateFailureNextCall) {
         set({ simulateFailureNextCall: false });
         throw new Error("Simulated delete failure");

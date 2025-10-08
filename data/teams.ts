@@ -39,7 +39,6 @@ export const teams: Team[] = (() => {
   const r = rand(123456);
   const out: Team[] = [];
 
-  // Add some sample teams that match the image
   const sampleTeams = [
     {
       name: "IT Support",
