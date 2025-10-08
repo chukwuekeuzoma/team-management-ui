@@ -5,15 +5,12 @@ import { useTeamsStore } from "@/stores/useTeamsStore";
 import { Team } from "@/types/teams";
 import {
   Table as TableComponent,
-  TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/Table/Table";
 import { Checkbox } from "@/components/ui/Checkbox/Checkbox";
 import { Spinner } from "@/components/ui/Spinner/Spinner";
-import { ActionsMenu } from "@/components/ui/ActionsMenu/ActionsMenu";
 import {
   DeleteTeamDialog,
   SuccessModal,
@@ -41,7 +38,7 @@ const Table = () => {
   const { teams, fetchTeams, loading, deleteTeam, updateTeam, createTeam } =
     useTeamsStore();
   const [query, setQuery] = useState("");
-  const [entityFilter, setEntityFilter] = useState("All");
+  const [entityFilter, setEntityFilter] = useState("Access Bank Nigeria");
   const [pageSize, setPageSize] = useState(10);
   const [page, setPage] = useState(1);
   const [sortKey, setSortKey] = useState<SortKey>("name");
