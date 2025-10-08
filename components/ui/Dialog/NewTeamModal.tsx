@@ -3,7 +3,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import { X } from "lucide-react";
 import {
   AlertDialog,
@@ -11,6 +10,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "./AlertDialog";
+import { ConfirmTeamModal } from "./ConfirmTeamModal";
 import { Button } from "@/components/ui/Button/Button";
 import { Input } from "@/components/ui/Input/input";
 import { Textarea } from "@/components/ui/TextArea/TextArea";
@@ -22,37 +22,10 @@ import {
   SelectValue,
 } from "@/components/ui/Select/Select";
 import { cn } from "@/lib/utils";
-
-// Validation schema
-const teamSchema = yup.object({
-  entity: yup.string().required("Entity is required"),
-  name: yup
-    .string()
-    .required("Team name is required")
-    .min(2, "Team name must be at least 2 characters")
-    .max(100, "Team name must be less than 100 characters"),
-  code: yup
-    .string()
-    .required("Team code is required")
-    .min(3, "Code must be at least 3 characters")
-    .max(5, "Code must be at most 5 characters")
-    .matches(
-      /^[A-Z0-9]+$/,
-      "Code must contain only uppercase letters and numbers"
-    ),
-  description: yup
-    .string()
-    .required("Description is required")
-    .min(10, "Description must be at least 10 characters")
-    .max(500, "Description must be less than 500 characters"),
-  teamEmail: yup
-    .string()
-    .email("Please enter a valid email address")
-    .required("Team email is required"),
-  manager: yup.string().required("Team manager is required"),
-});
-
-type TeamFormData = yup.InferType<typeof teamSchema>;
+import {
+  teamSchema,
+  TeamFormData,
+} from "@/components/validations/teamValidation";
 
 interface NewTeamModalProps {
   open: boolean;
@@ -89,6 +62,10 @@ export const NewTeamModal: React.FC<NewTeamModalProps> = ({
   onOpenChange,
   onSubmit,
 }) => {
+  const [confirmModalOpen, setConfirmModalOpen] = React.useState(false);
+  const [pendingTeamData, setPendingTeamData] =
+    React.useState<TeamFormData | null>(null);
+
   const {
     register,
     handleSubmit,
@@ -108,13 +85,22 @@ export const NewTeamModal: React.FC<NewTeamModalProps> = ({
   const watchedValues = watch();
 
   const handleFormSubmit = (data: TeamFormData) => {
-    onSubmit(data);
-    reset();
-    onOpenChange(false);
+    setPendingTeamData(data);
+    setConfirmModalOpen(true);
+  };
+
+  const handleConfirmCreate = () => {
+    if (pendingTeamData) {
+      onSubmit(pendingTeamData);
+      reset();
+      setPendingTeamData(null);
+      onOpenChange(false);
+    }
   };
 
   const handleClose = () => {
     reset();
+    setPendingTeamData(null);
     onOpenChange(false);
   };
 
@@ -243,7 +229,6 @@ export const NewTeamModal: React.FC<NewTeamModalProps> = ({
             )}
           </div>
 
-          {/* Team Manager Field */}
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-900">
               Team Manager <span className="text-red-500">*</span>
@@ -288,6 +273,22 @@ export const NewTeamModal: React.FC<NewTeamModalProps> = ({
           </div>
         </form>
       </AlertDialogContent>
+
+      <ConfirmTeamModal
+        open={confirmModalOpen}
+        onOpenChange={setConfirmModalOpen}
+        onConfirm={handleConfirmCreate}
+        teamData={
+          pendingTeamData
+            ? {
+                name: pendingTeamData.name,
+                code: pendingTeamData.code,
+                entity: pendingTeamData.entity,
+                manager: pendingTeamData.manager,
+              }
+            : undefined
+        }
+      />
     </AlertDialog>
   );
 };

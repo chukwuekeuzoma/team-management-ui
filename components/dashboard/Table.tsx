@@ -73,7 +73,7 @@ const Table = () => {
     useTeamsStore();
   const [query, setQuery] = useState("");
   const [entityFilter, setEntityFilter] = useState("All");
-  const [pageSize, setPageSize] = useState(100);
+  const [pageSize, setPageSize] = useState(10);
   const [page, setPage] = useState(1);
   const [sortKey, setSortKey] = useState<SortKey>("name");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
@@ -83,6 +83,9 @@ const Table = () => {
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [deletedTeamName, setDeletedTeamName] = useState<string>("");
   const [newTeamModalOpen, setNewTeamModalOpen] = useState(false);
+  const [successModalType, setSuccessModalType] = useState<"delete" | "create">(
+    "delete"
+  );
 
   useEffect(() => {
     fetchTeams().catch(() => {});
@@ -186,6 +189,7 @@ const Table = () => {
         await deleteTeam(teamToDelete);
         setDeleteDialogOpen(false);
         setDeletedTeamName(team?.name || "team");
+        setSuccessModalType("delete");
         setSuccessModalOpen(true);
         setTeamToDelete(null);
       } catch (error) {
@@ -210,6 +214,7 @@ const Table = () => {
       await createTeam(newTeamData);
       setNewTeamModalOpen(false);
       setDeletedTeamName(data.name);
+      setSuccessModalType("create");
       setSuccessModalOpen(true);
     } catch (error) {
       console.error("Failed to create team:", error);
@@ -457,8 +462,12 @@ const Table = () => {
       <SuccessModal
         open={successModalOpen}
         onOpenChange={setSuccessModalOpen}
-        title="Team Delete"
-        message={`You have deleted this team successfully.`}
+        title={successModalType === "create" ? "Team Created" : "Team Delete"}
+        message={
+          successModalType === "create"
+            ? "You have created this team successfully."
+            : `You have deleted this team successfully.`
+        }
         buttonText="Done"
         onDone={() => setSuccessModalOpen(false)}
       />
