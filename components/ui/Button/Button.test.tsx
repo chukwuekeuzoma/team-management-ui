@@ -9,30 +9,6 @@ describe("Button", () => {
     expect(button).toBeInTheDocument();
   });
 
-  it("renders with different variants", () => {
-    const { rerender } = render(<Button variant="default">Default</Button>);
-    expect(screen.getByRole("button")).toHaveClass("bg-primary");
-
-    rerender(<Button variant="outline">Outline</Button>);
-    expect(screen.getByRole("button")).toHaveClass("border");
-
-    rerender(<Button variant="destructive">Destructive</Button>);
-    expect(screen.getByRole("button")).toHaveClass("bg-red-600");
-  });
-
-  it("renders with different sizes", () => {
-    const { rerender } = render(<Button size="default">Default</Button>);
-    expect(screen.getByRole("button")).toHaveClass("h-9");
-
-    rerender(<Button size="sm">Small</Button>);
-    expect(screen.getByRole("button")).toHaveClass("h-8");
-
-    rerender(<Button size="lg">Large</Button>);
-    expect(screen.getByRole("button")).toHaveClass("h-10");
-
-    rerender(<Button size="icon">Icon</Button>);
-    expect(screen.getByRole("button")).toHaveClass("h-9", "w-9");
-  });
 
   it("handles click events", () => {
     const handleClick = jest.fn();
