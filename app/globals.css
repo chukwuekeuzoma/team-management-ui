@@ -27,6 +27,14 @@
   --color-icon-blue: var(--color-brand-bg);
   --color-button-border: var(--color-separator);
   --color-button-hover: #f9fafb;
+  --color-popover: #ffffff;
+  --color-popover-foreground: 222.2 84% 4.9%;
+  --color-accent: 210 40% 96%;
+  --color-accent-foreground: 222.2 47.4% 11.2%;
+  --color-muted: 210 40% 96%;
+  --color-muted-foreground: 215.4 16.3% 46.9%;
+  --color-border: 214.3 31.8% 91.4%;
+  --color-ring: 222.2 84% 4.9%;
 }
 
 /* Base layer for default look */
