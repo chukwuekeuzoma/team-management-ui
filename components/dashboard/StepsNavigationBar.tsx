@@ -12,11 +12,11 @@ type Step = {
 
 type StepsNavigationBarProps = {
   className?: string;
-  onStepClick?: (index: number) => void; // backward compatibility (unused)
+  onStepClick?: (index: number) => void;
   title?: string;
   onClose?: () => void;
-  breadcrumbs?: string[]; // e.g. ["Admin Settings", "Teams"]
-  onBack?: () => void; // optional back action for the breadcrumb row
+  breadcrumbs?: string[];
+  onBack?: () => void;
 };
 
 export const StepsNavigationBar: React.FC<StepsNavigationBarProps> = ({
