@@ -24,7 +24,7 @@ import { Checkbox } from "@/components/ui/Checkbox/Checkbox";
 import { Avatar, AvatarFallback } from "@/components/ui/Avatar/Avatar";
 import { Spinner } from "@/components/ui/Spinner/Spinner";
 import { ActionsMenu } from "@/components/ui/ActionsMenu/ActionsMenu";
-import { DeleteTeamDialog } from "@/components/ui/Dialog/DeleteTeamDialog";
+import { DeleteTeamDialog, SuccessModal } from "@/components/ui/Dialog";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 
 type SortKey = keyof Pick<
@@ -76,6 +76,8 @@ const Table = () => {
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [teamToDelete, setTeamToDelete] = useState<string | null>(null);
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [deletedTeamName, setDeletedTeamName] = useState<string>("");
 
   useEffect(() => {
     fetchTeams().catch(() => {});
@@ -175,8 +177,11 @@ const Table = () => {
   const confirmDelete = async () => {
     if (teamToDelete) {
       try {
+        const team = teams.find((t) => t.id === teamToDelete);
         await deleteTeam(teamToDelete);
         setDeleteDialogOpen(false);
+        setDeletedTeamName(team?.name || "team");
+        setSuccessModalOpen(true);
         setTeamToDelete(null);
       } catch (error) {
         console.error("Failed to delete team:", error);
@@ -417,6 +422,15 @@ const Table = () => {
             ? teams.find((t) => t.id === teamToDelete)?.name
             : undefined
         }
+      />
+
+      <SuccessModal
+        open={successModalOpen}
+        onOpenChange={setSuccessModalOpen}
+        title="Team Delete"
+        message={`You have deleted this team successfully.`}
+        buttonText="Done"
+        onDone={() => setSuccessModalOpen(false)}
       />
     </div>
   );
