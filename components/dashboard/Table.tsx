@@ -28,6 +28,7 @@ import {
   DeleteTeamDialog,
   SuccessModal,
   NewTeamModal,
+  EditTeamModal,
 } from "@/components/ui/Dialog";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 
@@ -83,9 +84,11 @@ const Table = () => {
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [deletedTeamName, setDeletedTeamName] = useState<string>("");
   const [newTeamModalOpen, setNewTeamModalOpen] = useState(false);
-  const [successModalType, setSuccessModalType] = useState<"delete" | "create">(
-    "delete"
-  );
+  const [editTeamModalOpen, setEditTeamModalOpen] = useState(false);
+  const [teamToEdit, setTeamToEdit] = useState<Team | null>(null);
+  const [successModalType, setSuccessModalType] = useState<
+    "delete" | "create" | "update"
+  >("delete");
 
   useEffect(() => {
     fetchTeams().catch(() => {});
@@ -164,16 +167,11 @@ const Table = () => {
     return pages;
   };
 
-  const handleEdit = async (teamId: string) => {
-    try {
-      // For now, just toggle the status as an example
-      const team = teams.find((t) => t.id === teamId);
-      if (team) {
-        const newStatus = team.status === "Active" ? "Inactive" : "Active";
-        await updateTeam(teamId, { status: newStatus });
-      }
-    } catch (error) {
-      console.error("Failed to update team:", error);
+  const handleEdit = (teamId: string) => {
+    const team = teams.find((t) => t.id === teamId);
+    if (team) {
+      setTeamToEdit(team);
+      setEditTeamModalOpen(true);
     }
   };
 
@@ -218,6 +216,31 @@ const Table = () => {
       setSuccessModalOpen(true);
     } catch (error) {
       console.error("Failed to create team:", error);
+    }
+  };
+
+  const handleUpdateTeam = async (data: any) => {
+    if (!teamToEdit) return;
+
+    try {
+      const updatedTeamData = {
+        name: data.name,
+        code: data.code,
+        description: data.description,
+        teamEmail: data.teamEmail,
+        entity: data.entity,
+        manager: data.manager,
+        status: teamToEdit.status, // Keep existing status
+      };
+
+      await updateTeam(teamToEdit.id, updatedTeamData);
+      setEditTeamModalOpen(false);
+      setDeletedTeamName(data.name);
+      setSuccessModalType("update");
+      setSuccessModalOpen(true);
+      setTeamToEdit(null);
+    } catch (error) {
+      console.error("Failed to update team:", error);
     }
   };
 
@@ -462,10 +485,18 @@ const Table = () => {
       <SuccessModal
         open={successModalOpen}
         onOpenChange={setSuccessModalOpen}
-        title={successModalType === "create" ? "Team Created" : "Team Delete"}
+        title={
+          successModalType === "create"
+            ? "Team Created"
+            : successModalType === "update"
+            ? "Team Updated"
+            : "Team Deleted"
+        }
         message={
           successModalType === "create"
             ? "You have created this team successfully."
+            : successModalType === "update"
+            ? "You have updated this team successfully."
             : `You have deleted this team successfully.`
         }
         buttonText="Done"
@@ -476,6 +507,13 @@ const Table = () => {
         open={newTeamModalOpen}
         onOpenChange={setNewTeamModalOpen}
         onSubmit={handleCreateTeam}
+      />
+
+      <EditTeamModal
+        open={editTeamModalOpen}
+        onOpenChange={setEditTeamModalOpen}
+        onSubmit={handleUpdateTeam}
+        team={teamToEdit}
       />
     </div>
   );

@@ -21,6 +21,7 @@ interface ConfirmTeamModalProps {
     entity: string;
     manager: string;
   };
+  mode?: "create" | "update";
 }
 
 export const ConfirmTeamModal: React.FC<ConfirmTeamModalProps> = ({
@@ -28,6 +29,7 @@ export const ConfirmTeamModal: React.FC<ConfirmTeamModalProps> = ({
   onOpenChange,
   onConfirm,
   teamData,
+  mode = "create",
 }) => {
   const handleConfirm = () => {
     onConfirm();
@@ -42,7 +44,6 @@ export const ConfirmTeamModal: React.FC<ConfirmTeamModalProps> = ({
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent className="sm:max-w-md">
         <AlertDialogHeader className="text-center">
-          {/* Icon with blue background and gear symbol */}
           <div className="flex justify-center mb-4">
             <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
               <Settings className="w-6 h-6 text-blue-600" />
@@ -50,14 +51,14 @@ export const ConfirmTeamModal: React.FC<ConfirmTeamModalProps> = ({
           </div>
 
           <AlertDialogTitle className="text-center text-lg font-semibold text-gray-900">
-            Create Team
+            {mode === "create" ? "Create Team" : "Update Team"}
           </AlertDialogTitle>
 
           <AlertDialogDescription className="text-center text-sm text-gray-600">
-            Are you sure you want to create this team?
+            {mode === "create"
+              ? "Are you sure you want to create this team?"
+              : "Are you sure you want to update this team?"}
           </AlertDialogDescription>
-
-          {/* Team details preview */}
           {teamData && (
             <div className="mt-4 p-4 bg-gray-50 rounded-lg text-left">
               <div className="space-y-2 text-sm">
@@ -82,7 +83,6 @@ export const ConfirmTeamModal: React.FC<ConfirmTeamModalProps> = ({
           )}
         </AlertDialogHeader>
 
-        {/* Action buttons */}
         <div className="flex items-center gap-3 pt-4">
           <Button
             type="button"
@@ -97,7 +97,7 @@ export const ConfirmTeamModal: React.FC<ConfirmTeamModalProps> = ({
             onClick={handleConfirm}
             className="bg-blue-600 hover:bg-blue-700 px-6 w-full"
           >
-            Yes, Create
+            {mode === "create" ? "Yes, Create" : "Yes, Update"}
           </Button>
         </div>
       </AlertDialogContent>

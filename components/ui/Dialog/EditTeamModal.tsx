@@ -26,11 +26,13 @@ import {
   teamSchema,
   TeamFormData,
 } from "@/components/validations/teamValidation";
+import { Team } from "@/types/teams";
 
-interface NewTeamModalProps {
+interface EditTeamModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (data: TeamFormData) => void;
+  team: Team | null;
 }
 
 // Mock data for dropdowns
@@ -57,10 +59,11 @@ const MANAGERS = [
   "Fatima Yusuf",
 ];
 
-export const NewTeamModal: React.FC<NewTeamModalProps> = ({
+export const EditTeamModal: React.FC<EditTeamModalProps> = ({
   open,
   onOpenChange,
   onSubmit,
+  team,
 }) => {
   const [confirmModalOpen, setConfirmModalOpen] = React.useState(false);
   const [pendingTeamData, setPendingTeamData] =
@@ -77,10 +80,28 @@ export const NewTeamModal: React.FC<NewTeamModalProps> = ({
     resolver: yupResolver(teamSchema),
     mode: "onChange",
     defaultValues: {
-      entity: "Access Bank Nigeria",
-      teamEmail: "ngit@accessbankplc.com",
+      entity: team?.entity || "Access Bank Nigeria",
+      teamEmail: team?.teamEmail || "ngit@accessbankplc.com",
+      name: team?.name || "",
+      code: team?.code || "",
+      description: team?.description || "",
+      manager: team?.manager || "",
     },
   });
+
+  // Reset form when team changes
+  React.useEffect(() => {
+    if (team) {
+      reset({
+        entity: team.entity,
+        teamEmail: team.teamEmail,
+        name: team.name,
+        code: team.code,
+        description: team.description,
+        manager: team.manager,
+      });
+    }
+  }, [team, reset]);
 
   const watchedValues = watch();
 
@@ -89,7 +110,7 @@ export const NewTeamModal: React.FC<NewTeamModalProps> = ({
     setConfirmModalOpen(true);
   };
 
-  const handleConfirmCreate = () => {
+  const handleConfirmUpdate = () => {
     if (pendingTeamData) {
       onSubmit(pendingTeamData);
       reset();
@@ -110,7 +131,7 @@ export const NewTeamModal: React.FC<NewTeamModalProps> = ({
         <AlertDialogHeader>
           <div className="flex items-center justify-between">
             <AlertDialogTitle className="text-xl font-semibold text-gray-900">
-              New Team
+              Edit Team
             </AlertDialogTitle>
             <button
               onClick={handleClose}
@@ -268,7 +289,7 @@ export const NewTeamModal: React.FC<NewTeamModalProps> = ({
               className="bg-blue-600 hover:bg-blue-700 px-6 w-full"
               disabled={!isValid}
             >
-              Create
+              Update
             </Button>
           </div>
         </form>
@@ -277,7 +298,7 @@ export const NewTeamModal: React.FC<NewTeamModalProps> = ({
       <ConfirmTeamModal
         open={confirmModalOpen}
         onOpenChange={setConfirmModalOpen}
-        onConfirm={handleConfirmCreate}
+        onConfirm={handleConfirmUpdate}
         teamData={
           pendingTeamData
             ? {
@@ -288,6 +309,7 @@ export const NewTeamModal: React.FC<NewTeamModalProps> = ({
               }
             : undefined
         }
+        mode="update"
       />
     </AlertDialog>
   );

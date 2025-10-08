@@ -11,11 +11,7 @@ export const teamSchema = yup.object({
     .string()
     .required("Team code is required")
     .min(3, "Code must be at least 3 characters")
-    .max(5, "Code must be at most 5 characters")
-    .matches(
-      /^[A-Z0-9]+$/,
-      "Code must contain only uppercase letters and numbers"
-    ),
+    .max(10, "Code must be at most 10 characters"),
   description: yup
     .string()
     .required("Description is required")
