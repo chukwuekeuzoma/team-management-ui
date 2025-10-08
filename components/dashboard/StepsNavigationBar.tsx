@@ -2,13 +2,7 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import type { LucideIcon } from "lucide-react";
 import { Home, X, ChevronLeft } from "lucide-react";
-
-type Step = {
-  label: string;
-  icon?: LucideIcon;
-};
 
 type StepsNavigationBarProps = {
   className?: string;
@@ -21,7 +15,6 @@ type StepsNavigationBarProps = {
 
 export const StepsNavigationBar: React.FC<StepsNavigationBarProps> = ({
   className,
-  onStepClick,
   title = "Admin Settings",
   onClose,
   breadcrumbs = ["Admin Settings", "Teams"],

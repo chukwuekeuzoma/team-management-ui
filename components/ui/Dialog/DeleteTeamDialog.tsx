@@ -24,7 +24,6 @@ export const DeleteTeamDialog: React.FC<DeleteTeamDialogProps> = ({
   open,
   onOpenChange,
   onConfirm,
-  teamName,
 }) => {
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>

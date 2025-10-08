@@ -18,19 +18,19 @@ export const filterAndSortTeams = (
   query: string,
   entityFilter: string,
   sortKey: SortKey,
-  sortDir: SortDir
+  sortDir: SortDir,
 ) => {
   let filtered = teams;
-  
+
   // Filter by search query
   if (query.trim()) {
     const q = query.trim().toLowerCase();
     filtered = filtered.filter(
       (t) =>
-        t.name.toLowerCase().includes(q) || t.code.toLowerCase().includes(q)
+        t.name.toLowerCase().includes(q) || t.code.toLowerCase().includes(q),
     );
   }
-  
+
   // Filter by entity
   if (entityFilter !== "All") {
     filtered = filtered.filter((t) => t.entity === entityFilter);
@@ -38,7 +38,7 @@ export const filterAndSortTeams = (
 
   // Sort if sort direction is set
   if (sortDir) {
-    filtered = [...filtered].sort((a: any, b: any) => {
+    filtered = [...filtered].sort((a: Team, b: Team) => {
       const av = String(a[sortKey] ?? "").toLowerCase();
       const bv = String(b[sortKey] ?? "").toLowerCase();
       if (av < bv) return sortDir === "asc" ? -1 : 1;
@@ -46,28 +46,29 @@ export const filterAndSortTeams = (
       return 0;
     });
   }
-  
+
   return filtered;
 };
 
 export const getNextSortDirection = (
   currentSortKey: SortKey,
   currentSortDir: SortDir,
-  newSortKey: SortKey
+  newSortKey: SortKey,
 ): { sortKey: SortKey; sortDir: SortDir } => {
   if (currentSortKey === newSortKey) {
     return {
       sortKey: newSortKey,
-      sortDir: currentSortDir === "asc" 
-        ? "desc" 
-        : currentSortDir === "desc" 
-        ? null 
-        : "asc"
+      sortDir:
+        currentSortDir === "asc"
+          ? "desc"
+          : currentSortDir === "desc"
+            ? null
+            : "asc",
     };
   } else {
     return {
       sortKey: newSortKey,
-      sortDir: "asc"
+      sortDir: "asc",
     };
   }
 };

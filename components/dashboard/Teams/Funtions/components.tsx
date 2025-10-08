@@ -1,5 +1,6 @@
 import React from "react";
 import { Avatar, AvatarFallback } from "@/components/ui/Avatar/Avatar";
+import { Team } from "@/types/teams";
 
 export const ManagerAvatar = ({ name }: { name: string }) => {
   const initials = name
@@ -23,8 +24,8 @@ export const ManagerAvatar = ({ name }: { name: string }) => {
 
 export const toggleSelectAll = (
   selectedRows: Set<string>,
-  paged: any[],
-  setSelectedRows: (selected: Set<string>) => void
+  paged: Team[],
+  setSelectedRows: (selected: Set<string>) => void,
 ) => {
   if (selectedRows.size === paged.length) {
     setSelectedRows(new Set());
@@ -36,7 +37,7 @@ export const toggleSelectAll = (
 export const toggleSelectRow = (
   id: string,
   selectedRows: Set<string>,
-  setSelectedRows: (selected: Set<string>) => void
+  setSelectedRows: (selected: Set<string>) => void,
 ) => {
   const newSelected = new Set(selectedRows);
   if (newSelected.has(id)) {

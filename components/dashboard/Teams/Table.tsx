@@ -32,7 +32,9 @@ import {
   SearchAndFilters,
   type SortKey,
   type SortDir,
+  type CreateTeamData,
 } from "./Funtions";
+import { TeamFormData } from "@/components/validations/teamValidation";
 
 const Table = () => {
   const { teams, fetchTeams, loading, deleteTeam, updateTeam, createTeam } =
@@ -47,7 +49,6 @@ const Table = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [teamToDelete, setTeamToDelete] = useState<string | null>(null);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
-  const [deletedTeamName, setDeletedTeamName] = useState<string>("");
   const [newTeamModalOpen, setNewTeamModalOpen] = useState(false);
   const [editTeamModalOpen, setEditTeamModalOpen] = useState(false);
   const [teamToEdit, setTeamToEdit] = useState<Team | null>(null);
@@ -62,7 +63,7 @@ const Table = () => {
   const entities = useMemo(() => getUniqueEntities(teams), [teams]);
   const filtered = useMemo(
     () => filterAndSortTeams(teams, query, entityFilter, sortKey, sortDir),
-    [teams, query, entityFilter, sortKey, sortDir]
+    [teams, query, entityFilter, sortKey, sortDir],
   );
   const { paged, total } = useClientPagination(filtered, page, pageSize);
   const totalPages = Math.ceil(total / pageSize);
@@ -85,15 +86,13 @@ const Table = () => {
     setEditTeamModalOpen,
     setTeamToEdit,
     setSuccessModalOpen,
-    setDeletedTeamName,
-    setSuccessModalType
   );
 
   const toggleSort = (key: SortKey) => {
     const { sortKey: newSortKey, sortDir: newSortDir } = getNextSortDirection(
       sortKey,
       sortDir,
-      key
+      key,
     );
     setSortKey(newSortKey);
     setSortDir(newSortDir);
@@ -114,32 +113,41 @@ const Table = () => {
     confirmDelete(
       teamToDelete,
       setDeleteDialogOpen,
-      setDeletedTeamName,
       setSuccessModalType,
       setSuccessModalOpen,
-      setTeamToDelete
+      setTeamToDelete,
     );
   };
 
-  const handleCreateTeamSubmit = (data: any) => {
+  const handleCreateTeamSubmit = (data: TeamFormData) => {
+    const createTeamData: CreateTeamData = {
+      ...data,
+      email: `${data.name.toLowerCase().replace(/\s+/g, ".")}@example.com`,
+      status: "Active",
+    };
     handleCreateTeam(
-      data,
+      createTeamData,
       setNewTeamModalOpen,
-      setDeletedTeamName,
       setSuccessModalType,
-      setSuccessModalOpen
+      setSuccessModalOpen,
     );
   };
 
-  const handleUpdateTeamSubmit = (data: any) => {
+  const handleUpdateTeamSubmit = (data: TeamFormData) => {
+    const updateTeamData: CreateTeamData = {
+      ...data,
+      email:
+        teamToEdit?.email ||
+        `${data.name.toLowerCase().replace(/\s+/g, ".")}@example.com`,
+      status: teamToEdit?.status || "Active",
+    };
     handleUpdateTeam(
-      data,
+      updateTeamData,
       teamToEdit,
       setEditTeamModalOpen,
-      setDeletedTeamName,
       setSuccessModalType,
       setSuccessModalOpen,
-      setTeamToEdit
+      setTeamToEdit,
     );
   };
 

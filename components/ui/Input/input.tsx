@@ -34,19 +34,19 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
           type={type}
           className={cn(
             "flex h-9 w-full rounded-md border border-input bg-transparent px-3 pr-10 py-1 text-base transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-            className
+            className,
           )}
           ref={ref}
           onChange={handleChange}
-          value={value as any}
-          defaultValue={defaultValue as any}
+          value={value}
+          defaultValue={defaultValue}
           role="textbox"
           {...props}
         />
         {hasText && (
           <svg
             className={cn(
-              "pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 h-4 w-4 text-input-icon"
+              "pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 h-4 w-4 text-input-icon",
             )}
             viewBox="0 0 20 20"
             fill="currentColor"
@@ -61,7 +61,7 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
         )}
       </div>
     );
-  }
+  },
 );
 Input.displayName = "Input";
 

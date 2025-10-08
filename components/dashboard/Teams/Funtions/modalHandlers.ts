@@ -1,14 +1,14 @@
+import { Team } from "../../../../types/teams";
+
 export const createModalHandlers = (
   setDeleteDialogOpen: (open: boolean) => void,
   setTeamToDelete: (id: string | null) => void,
   setNewTeamModalOpen: (open: boolean) => void,
   setEditTeamModalOpen: (open: boolean) => void,
-  setTeamToEdit: (team: any) => void,
+  setTeamToEdit: (team: Team) => void,
   setSuccessModalOpen: (open: boolean) => void,
-  setDeletedTeamName: (name: string) => void,
-  setSuccessModalType: (type: "delete" | "create" | "update") => void
 ) => {
-  const handleEditClick = (team: any) => {
+  const handleEditClick = (team: Team) => {
     setTeamToEdit(team);
     setEditTeamModalOpen(true);
   };
@@ -27,7 +27,7 @@ export const createModalHandlers = (
   };
 
   const getSuccessModalProps = (
-    successModalType: "delete" | "create" | "update"
+    successModalType: "delete" | "create" | "update",
   ) => {
     const titleMap = {
       create: "Team Created",

@@ -1,15 +1,12 @@
 import React from "react";
-import {
-  TableBody,
-  TableCell,
-  TableRow,
-} from "@/components/ui/Table/Table";
+import { TableBody, TableCell, TableRow } from "@/components/ui/Table/Table";
 import { Checkbox } from "@/components/ui/Checkbox/Checkbox";
 import { ActionsMenu } from "@/components/ui/ActionsMenu/ActionsMenu";
 import { ManagerAvatar, toggleSelectRow } from "./components";
+import { Team } from "@/types/teams";
 
 interface TableBodyProps {
-  paged: any[];
+  paged: Team[];
   selectedRows: Set<string>;
   setSelectedRows: (selected: Set<string>) => void;
   onEdit: (teamId: string) => void;
@@ -30,7 +27,9 @@ export const CustomTableBody: React.FC<TableBodyProps> = ({
           <TableCell>
             <Checkbox
               checked={selectedRows.has(team.id)}
-              onCheckedChange={() => toggleSelectRow(team.id, selectedRows, setSelectedRows)}
+              onCheckedChange={() =>
+                toggleSelectRow(team.id, selectedRows, setSelectedRows)
+              }
             />
           </TableCell>
           <TableCell className="font-medium">{team.name}</TableCell>
@@ -38,9 +37,7 @@ export const CustomTableBody: React.FC<TableBodyProps> = ({
           <TableCell className="text-gray-600 max-w-xs truncate">
             {team.description}
           </TableCell>
-          <TableCell className="text-gray-600">
-            {team.teamEmail}
-          </TableCell>
+          <TableCell className="text-gray-600">{team.teamEmail}</TableCell>
           <TableCell className="text-gray-600">{team.entity}</TableCell>
           <TableCell>
             <ManagerAvatar name={team.manager} />
