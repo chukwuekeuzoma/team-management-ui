@@ -173,7 +173,7 @@ const Table = () => {
       />
 
       <div className="border border-gray-200 rounded-lg overflow-hidden">
-        <TableComponent>
+        <TableComponent role="table" aria-label="Teams table">
           <TableHeader className="bg-blue-600">
             <TableRow className="border-0 hover:bg-blue-600">
               <TableHead className="text-white font-medium">
@@ -184,6 +184,7 @@ const Table = () => {
                   onCheckedChange={() =>
                     toggleSelectAll(selectedRows, paged, setSelectedRows)
                   }
+                  aria-label="Select all teams"
                 />
               </TableHead>
               <TableHead

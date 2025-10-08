@@ -40,6 +40,7 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
           onChange={handleChange}
           value={value as any}
           defaultValue={defaultValue as any}
+          role="textbox"
           {...props}
         />
         {hasText && (

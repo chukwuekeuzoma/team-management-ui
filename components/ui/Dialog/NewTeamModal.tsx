@@ -106,7 +106,10 @@ export const NewTeamModal: React.FC<NewTeamModalProps> = ({
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent className="max-w-2xl">
+      <AlertDialogContent
+        className="max-w-2xl"
+        aria-describedby="new-team-description"
+      >
         <AlertDialogHeader>
           <div className="flex items-center justify-between">
             <AlertDialogTitle className="text-xl font-semibold text-gray-900">
@@ -115,15 +118,24 @@ export const NewTeamModal: React.FC<NewTeamModalProps> = ({
             <button
               onClick={handleClose}
               className="text-gray-400 hover:text-gray-600 transition-colors"
+              aria-label="Close dialog"
             >
               <X className="h-5 w-5" />
             </button>
           </div>
         </AlertDialogHeader>
 
-        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
+        <form
+          onSubmit={handleSubmit(handleFormSubmit)}
+          className="space-y-6"
+          role="form"
+          aria-label="New team form"
+        >
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-900">
+            <label
+              htmlFor="entity-select"
+              className="text-sm font-medium text-gray-900"
+            >
               Entity <span className="text-red-500">*</span>
             </label>
             <Select
@@ -132,7 +144,11 @@ export const NewTeamModal: React.FC<NewTeamModalProps> = ({
                 setValue("entity", value, { shouldValidate: true })
               }
             >
-              <SelectTrigger className="w-full">
+              <SelectTrigger
+                className="w-full"
+                id="entity-select"
+                aria-describedby={errors.entity ? "entity-error" : undefined}
+              >
                 <SelectValue placeholder="Select entity" />
               </SelectTrigger>
               <SelectContent>
@@ -144,93 +160,155 @@ export const NewTeamModal: React.FC<NewTeamModalProps> = ({
               </SelectContent>
             </Select>
             {errors.entity && (
-              <p className="text-sm text-red-500">{errors.entity.message}</p>
+              <p
+                id="entity-error"
+                className="text-sm text-red-500"
+                role="alert"
+                aria-live="polite"
+              >
+                {errors.entity.message}
+              </p>
             )}
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-900">
+            <label
+              htmlFor="team-name"
+              className="text-sm font-medium text-gray-900"
+            >
               Team Name <span className="text-red-500">*</span>
             </label>
             <Input
               {...register("name")}
+              id="team-name"
               placeholder="Enter team name"
+              aria-describedby={errors.name ? "team-name-error" : undefined}
               className={cn(
                 "w-full",
-                errors.name && "border-red-500 focus-visible:ring-red-500"
+                errors.name && "border-red-500 focus-visible:ring-red-500",
               )}
             />
             {errors.name && (
-              <p className="text-sm text-red-500">{errors.name.message}</p>
+              <p
+                id="team-name-error"
+                className="text-sm text-red-500"
+                role="alert"
+                aria-live="polite"
+              >
+                {errors.name.message}
+              </p>
             )}
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-900">
+            <label
+              htmlFor="team-code"
+              className="text-sm font-medium text-gray-900"
+            >
               Code <span className="text-red-500">*</span>
             </label>
             <Input
               {...register("code")}
+              id="team-code"
               placeholder="Enter team code here"
+              aria-describedby={
+                errors.code ? "team-code-error" : "team-code-help"
+              }
               className={cn(
                 "w-full uppercase",
-                errors.code && "border-red-500 focus-visible:ring-red-500"
+                errors.code && "border-red-500 focus-visible:ring-red-500",
               )}
               onChange={(e) => {
                 e.target.value = e.target.value.toUpperCase();
                 register("code").onChange(e);
               }}
             />
-            <p className="text-xs text-gray-500">
+            <p id="team-code-help" className="text-xs text-gray-500">
               Min.: 3 and Max.: 10 characters
             </p>
             {errors.code && (
-              <p className="text-sm text-red-500">{errors.code.message}</p>
+              <p
+                id="team-code-error"
+                className="text-sm text-red-500"
+                role="alert"
+                aria-live="polite"
+              >
+                {errors.code.message}
+              </p>
             )}
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-900">
+            <label
+              htmlFor="team-description"
+              className="text-sm font-medium text-gray-900"
+            >
               Description <span className="text-red-500">*</span>
             </label>
             <Textarea
               {...register("description")}
+              id="team-description"
               placeholder="Enter the description of this Team"
+              aria-describedby={
+                errors.description ? "team-description-error" : undefined
+              }
               className={cn(
                 "w-full min-h-[80px]",
                 errors.description &&
-                  "border-red-500 focus-visible:ring-red-500"
+                  "border-red-500 focus-visible:ring-red-500",
               )}
             />
             {errors.description && (
-              <p className="text-sm text-red-500">
+              <p
+                id="team-description-error"
+                className="text-sm text-red-500"
+                role="alert"
+                aria-live="polite"
+              >
                 {errors.description.message}
               </p>
             )}
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-900">
+            <label
+              htmlFor="team-email"
+              className="text-sm font-medium text-gray-900"
+            >
               Team Email Address
             </label>
             <Input
               {...register("teamEmail")}
+              id="team-email"
               type="email"
               placeholder="Enter team email address"
+              aria-describedby={
+                errors.teamEmail ? "team-email-error" : "team-email-help"
+              }
               className={cn(
                 "w-full",
-                errors.teamEmail && "border-red-500 focus-visible:ring-red-500"
+                errors.teamEmail && "border-red-500 focus-visible:ring-red-500",
               )}
             />
-            <p className="text-xs text-gray-500">
+            <p id="team-email-help" className="text-xs text-gray-500">
               Everyone in this Team receives an email whenever a message is sent
               to this email address.
             </p>
             {errors.teamEmail && (
-              <p className="text-sm text-red-500">{errors.teamEmail.message}</p>
+              <p
+                id="team-email-error"
+                className="text-sm text-red-500"
+                role="alert"
+                aria-live="polite"
+              >
+                {errors.teamEmail.message}
+              </p>
             )}
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-900">
+            <label
+              htmlFor="team-manager"
+              className="text-sm font-medium text-gray-900"
+            >
               Team Manager <span className="text-red-500">*</span>
             </label>
             <Select
@@ -239,7 +317,13 @@ export const NewTeamModal: React.FC<NewTeamModalProps> = ({
                 setValue("manager", value, { shouldValidate: true })
               }
             >
-              <SelectTrigger className="w-full">
+              <SelectTrigger
+                className="w-full"
+                id="team-manager"
+                aria-describedby={
+                  errors.manager ? "team-manager-error" : undefined
+                }
+              >
                 <SelectValue placeholder="Select team manager" />
               </SelectTrigger>
               <SelectContent>
@@ -251,7 +335,14 @@ export const NewTeamModal: React.FC<NewTeamModalProps> = ({
               </SelectContent>
             </Select>
             {errors.manager && (
-              <p className="text-sm text-red-500">{errors.manager.message}</p>
+              <p
+                id="team-manager-error"
+                className="text-sm text-red-500"
+                role="alert"
+                aria-live="polite"
+              >
+                {errors.manager.message}
+              </p>
             )}
           </div>
           <div className="flex items-center gap-3 pt-6 border-t border-gray-200">
