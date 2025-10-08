@@ -54,17 +54,17 @@ export const StepsNavigationBar: React.FC<StepsNavigationBarProps> = ({
         <div className="w-full bg-white">
           <div className="max-w-7xl px-6 py-3">
             {breadcrumbs?.length ? (
-              <div className="flex items-center text-sm text-nav-text">
+              <div className="flex items-center text-[12px] text-nav-text">
                 <button
                   type="button"
                   aria-label="Back"
                   onClick={onBack}
                   className={cn(
-                    "w-5 h-5 mr-3 rounded-full border border-button-border flex items-center justify-center hover:bg-button-hover",
+                    "w-4 h-4 mr-3 rounded-full border border-button-border flex items-center justify-center hover:bg-button-hover",
                     onBack ? "cursor-pointer" : "cursor-default opacity-60"
                   )}
                 >
-                  <ChevronLeft className="w-3 h-3" />
+                  <ChevronLeft className="w-2 h-2" />
                 </button>
                 {breadcrumbs.map((crumb, index) => (
                   <React.Fragment key={`${crumb}-${index}`}>
