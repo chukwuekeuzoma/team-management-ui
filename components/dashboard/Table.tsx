@@ -23,6 +23,7 @@ import {
 import { Checkbox } from "@/components/ui/Checkbox/Checkbox";
 import { Avatar, AvatarFallback } from "@/components/ui/Avatar/Avatar";
 import { Spinner } from "@/components/ui/Spinner/Spinner";
+import { ActionsMenu } from "@/components/ui/ActionsMenu/ActionsMenu";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 
 type SortKey = keyof Pick<
@@ -63,7 +64,8 @@ const ManagerAvatar = ({ name }: { name: string }) => {
 };
 
 const Table = () => {
-  const { teams, fetchTeams, loading, deleteTeam } = useTeamsStore();
+  const { teams, fetchTeams, loading, deleteTeam, updateTeam } =
+    useTeamsStore();
   const [query, setQuery] = useState("");
   const [entityFilter, setEntityFilter] = useState("All");
   const [pageSize, setPageSize] = useState(100);
@@ -147,6 +149,29 @@ const Table = () => {
       pages.push(i);
     }
     return pages;
+  };
+
+  const handleEdit = async (teamId: string) => {
+    try {
+      // For now, just toggle the status as an example
+      const team = teams.find((t) => t.id === teamId);
+      if (team) {
+        const newStatus = team.status === "Active" ? "Inactive" : "Active";
+        await updateTeam(teamId, { status: newStatus });
+      }
+    } catch (error) {
+      console.error("Failed to update team:", error);
+    }
+  };
+
+  const handleDelete = async (teamId: string) => {
+    if (window.confirm("Are you sure you want to delete this team?")) {
+      try {
+        await deleteTeam(teamId);
+      } catch (error) {
+        console.error("Failed to delete team:", error);
+      }
+    }
   };
 
   if (loading) {
@@ -256,6 +281,9 @@ const Table = () => {
               >
                 Manager
               </TableHead>
+              <TableHead className="text-white font-medium w-12">
+                Actions
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -278,6 +306,12 @@ const Table = () => {
                 <TableCell className="text-gray-600">{team.entity}</TableCell>
                 <TableCell>
                   <ManagerAvatar name={team.manager} />
+                </TableCell>
+                <TableCell>
+                  <ActionsMenu
+                    onEdit={() => handleEdit(team.id)}
+                    onDelete={() => handleDelete(team.id)}
+                  />
                 </TableCell>
               </TableRow>
             ))}
