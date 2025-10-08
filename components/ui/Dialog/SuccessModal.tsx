@@ -56,24 +56,25 @@ export const SuccessModal: React.FC<SuccessModalProps> = ({
             </div>
           </div>
 
-          <AlertDialogTitle className="text-lg font-semibold text-gray-900">
+          <AlertDialogTitle className="text-center text-lg font-semibold text-gray-900">
             {title}
           </AlertDialogTitle>
 
-          <AlertDialogDescription className="text-sm text-gray-600">
+          <AlertDialogDescription className="text-center text-sm text-gray-600">
             {message}
           </AlertDialogDescription>
         </AlertDialogHeader>
 
-        <div className="flex justify-center mt-6">
+        {/* <div className="flex justify-center mt-6"> */}
           <Button
             onClick={handleDone}
             className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md"
           >
             {buttonText}
           </Button>
-        </div>
+        {/* </div> */}
       </AlertDialogContent>
     </AlertDialog>
   );
 };
+// 

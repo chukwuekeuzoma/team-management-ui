@@ -1,11 +1,10 @@
 "use client";
 
 import React from "react";
-import { X, AlertTriangle } from "lucide-react";
+import Image from "next/image";
+import { X } from "lucide-react";
 import {
   AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
@@ -30,7 +29,6 @@ export const DeleteTeamDialog: React.FC<DeleteTeamDialogProps> = ({
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent className="sm:max-w-md">
-        {/* Close button */}
         <button
           onClick={() => onOpenChange(false)}
           className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
@@ -40,18 +38,17 @@ export const DeleteTeamDialog: React.FC<DeleteTeamDialogProps> = ({
         </button>
 
         <AlertDialogHeader className="text-center">
-          {/* Warning icon */}
           <div className="flex justify-center mb-4">
             <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
-              <AlertTriangle className="w-6 h-6 text-red-600" />
+              <Image src="/error.svg" alt="Error" width={24} height={24} />
             </div>
           </div>
 
-          <AlertDialogTitle className="text-lg font-semibold text-gray-900">
+          <AlertDialogTitle className="text-lg font-semibold text-gray-900 text-center">
             Delete Team
           </AlertDialogTitle>
 
-          <AlertDialogDescription className="text-sm text-gray-600">
+          <AlertDialogDescription className="text-sm text-gray-600 text-center">
             Are you sure you want to deactivate this team?
           </AlertDialogDescription>
         </AlertDialogHeader>
