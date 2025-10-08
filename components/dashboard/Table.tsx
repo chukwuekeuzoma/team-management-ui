@@ -24,6 +24,7 @@ import { Checkbox } from "@/components/ui/Checkbox/Checkbox";
 import { Avatar, AvatarFallback } from "@/components/ui/Avatar/Avatar";
 import { Spinner } from "@/components/ui/Spinner/Spinner";
 import { ActionsMenu } from "@/components/ui/ActionsMenu/ActionsMenu";
+import { DeleteTeamDialog } from "@/components/ui/Dialog/DeleteTeamDialog";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 
 type SortKey = keyof Pick<
@@ -73,6 +74,8 @@ const Table = () => {
   const [sortKey, setSortKey] = useState<SortKey>("name");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [teamToDelete, setTeamToDelete] = useState<string | null>(null);
 
   useEffect(() => {
     fetchTeams().catch(() => {});
@@ -164,10 +167,17 @@ const Table = () => {
     }
   };
 
-  const handleDelete = async (teamId: string) => {
-    if (window.confirm("Are you sure you want to delete this team?")) {
+  const handleDelete = (teamId: string) => {
+    setTeamToDelete(teamId);
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (teamToDelete) {
       try {
-        await deleteTeam(teamId);
+        await deleteTeam(teamToDelete);
+        setDeleteDialogOpen(false);
+        setTeamToDelete(null);
       } catch (error) {
         console.error("Failed to delete team:", error);
       }
@@ -397,6 +407,17 @@ const Table = () => {
           </div>
         </div>
       </div>
+
+      <DeleteTeamDialog
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        onConfirm={confirmDelete}
+        teamName={
+          teamToDelete
+            ? teams.find((t) => t.id === teamToDelete)?.name
+            : undefined
+        }
+      />
     </div>
   );
 };
