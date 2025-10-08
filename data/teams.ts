@@ -38,7 +38,81 @@ function isoDateDaysAgo(days: number) {
 export const teams: Team[] = (() => {
   const r = rand(123456);
   const out: Team[] = [];
-  for (let i = 1; i <= 500; i++) {
+
+  // Add some sample teams that match the image
+  const sampleTeams = [
+    {
+      name: "IT Support",
+      code: "ADM",
+      description:
+        "Manages system settings, user roles, and platform configurations",
+      teamEmail: "admin@accessbankplc.com",
+      entity: "Access Bank Nigeria",
+      manager: "Joshua Gladr",
+    },
+    {
+      name: "Change Management Team",
+      code: "CMG",
+      description:
+        "Oversees and approves IT changes, ensuring minimal disruption",
+      teamEmail: "angchng@accessbankplc.com",
+      entity: "Access Bank Nigeria",
+      manager: "Joshua Gladr",
+    },
+    {
+      name: "Incident Manager",
+      code: "IMG",
+      description: "Responsible for managing and resolving incidents",
+      teamEmail: "anginc@accessbankplc.com",
+      entity: "Access Bank Angola",
+      manager: "Joshua Gladr",
+    },
+    {
+      name: "Service Request Manager",
+      code: "SQM",
+      description:
+        "Oversees and manages service requests, ensuring quality delivery",
+      teamEmail: "gbsrm@accessbankplc.com",
+      entity: "Access Bank Ghana",
+      manager: "Joshua Gladr",
+    },
+    {
+      name: "Problem Manager",
+      code: "PBM",
+      description:
+        "Identifies and analyzes recurring incidents to determine root causes",
+      teamEmail: "ngprb@accessbankplc.com",
+      entity: "Access Bank Nigeria",
+      manager: "Joshua Gladr",
+    },
+  ];
+
+  // Add sample teams first
+  sampleTeams.forEach((team, index) => {
+    const id = `team-${index + 1}`;
+    const email = `${team.name
+      .toLowerCase()
+      .replace(/\s+/g, ".")
+      .replace(/[^a-z0-9.]/g, "")}@example.com`;
+    const status = "Active" as Team["status"];
+    const createdAt = isoDateDaysAgo(Math.floor(r() * 365 * 2));
+
+    out.push({
+      id,
+      name: team.name,
+      description: team.description,
+      code: team.code,
+      email,
+      teamEmail: team.teamEmail,
+      entity: team.entity,
+      manager: team.manager,
+      status,
+      createdAt,
+    });
+  });
+
+  // Generate additional teams
+  for (let i = sampleTeams.length + 1; i <= 500; i++) {
     const id = `team-${i}`;
     const name = `${pick(r, [
       "Alpha",
@@ -63,6 +137,10 @@ export const teams: Team[] = (() => {
       .toLowerCase()
       .replace(/\s+/g, ".")
       .replace(/[^a-z0-9.]/g, "")}@example.com`;
+    const teamEmail = `${name
+      .toLowerCase()
+      .replace(/\s+/g, "")
+      .replace(/[^a-z0-9]/g, "")}@accessbankplc.com`;
     const entity = pick(r, ENTITIES);
     const manager = pick(r, MANAGERS);
     const status = r() > 0.2 ? "Active" : "Inactive";
@@ -73,6 +151,7 @@ export const teams: Team[] = (() => {
       description,
       code,
       email,
+      teamEmail,
       entity,
       manager,
       status: status as Team["status"],

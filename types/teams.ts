@@ -6,6 +6,7 @@ export interface Team {
   description: string;
   code: string;
   email: string;
+  teamEmail: string;
   entity: string;
   manager: string;
   status: TeamStatus;

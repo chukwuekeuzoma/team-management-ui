@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { Team } from "@/types/teams";
-import { teams as initialTeams } from "../data/teams";
+import { teams as initialTeams } from "@/data/teams";
 
 type State = {
   teams: Team[];
