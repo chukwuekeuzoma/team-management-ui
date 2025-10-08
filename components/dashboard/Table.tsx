@@ -24,7 +24,11 @@ import { Checkbox } from "@/components/ui/Checkbox/Checkbox";
 import { Avatar, AvatarFallback } from "@/components/ui/Avatar/Avatar";
 import { Spinner } from "@/components/ui/Spinner/Spinner";
 import { ActionsMenu } from "@/components/ui/ActionsMenu/ActionsMenu";
-import { DeleteTeamDialog, SuccessModal } from "@/components/ui/Dialog";
+import {
+  DeleteTeamDialog,
+  SuccessModal,
+  NewTeamModal,
+} from "@/components/ui/Dialog";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 
 type SortKey = keyof Pick<
@@ -65,7 +69,7 @@ const ManagerAvatar = ({ name }: { name: string }) => {
 };
 
 const Table = () => {
-  const { teams, fetchTeams, loading, deleteTeam, updateTeam } =
+  const { teams, fetchTeams, loading, deleteTeam, updateTeam, createTeam } =
     useTeamsStore();
   const [query, setQuery] = useState("");
   const [entityFilter, setEntityFilter] = useState("All");
@@ -78,6 +82,7 @@ const Table = () => {
   const [teamToDelete, setTeamToDelete] = useState<string | null>(null);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [deletedTeamName, setDeletedTeamName] = useState<string>("");
+  const [newTeamModalOpen, setNewTeamModalOpen] = useState(false);
 
   useEffect(() => {
     fetchTeams().catch(() => {});
@@ -189,6 +194,28 @@ const Table = () => {
     }
   };
 
+  const handleCreateTeam = async (data: any) => {
+    try {
+      const newTeamData = {
+        name: data.name,
+        code: data.code,
+        description: data.description,
+        email: `${data.name.toLowerCase().replace(/\s+/g, ".")}@example.com`,
+        teamEmail: data.teamEmail,
+        entity: data.entity,
+        manager: data.manager,
+        status: "Active" as const,
+      };
+
+      await createTeam(newTeamData);
+      setNewTeamModalOpen(false);
+      setDeletedTeamName(data.name);
+      setSuccessModalOpen(true);
+    } catch (error) {
+      console.error("Failed to create team:", error);
+    }
+  };
+
   if (loading) {
     return (
       <div className="p-6 bg-white min-h-screen">
@@ -248,7 +275,10 @@ const Table = () => {
           </SelectContent>
         </Select>
 
-        <Button className="bg-blue-600 hover:bg-blue-700">
+        <Button
+          className="bg-blue-600 hover:bg-blue-700"
+          onClick={() => setNewTeamModalOpen(true)}
+        >
           <Plus className="h-4 w-4 mr-2" />
           Create New Team
         </Button>
@@ -431,6 +461,12 @@ const Table = () => {
         message={`You have deleted this team successfully.`}
         buttonText="Done"
         onDone={() => setSuccessModalOpen(false)}
+      />
+
+      <NewTeamModal
+        open={newTeamModalOpen}
+        onOpenChange={setNewTeamModalOpen}
+        onSubmit={handleCreateTeam}
       />
     </div>
   );
